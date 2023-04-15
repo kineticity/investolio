@@ -147,3 +147,4 @@ yahoo-fin==0.8.9.1
 yahooquery==2.2.15
 yarl==1.6.3
 yfinance==0.1.63
+google-cloud-storage==2.8.0
