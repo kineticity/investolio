@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 stocks_to_drop.py
 stocks_to_drop.csv
 stocks_to_drop_final.csv
@@ -9,3 +10,7 @@ test.py
 website.py
 Unfiltered_raw_df
 yahootickers.xlsx
+=======
+.env
+node_modules/
+>>>>>>> caf0e9868118ec9b0e806bdced9fac4946f72379
