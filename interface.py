@@ -1,4 +1,29 @@
 #%%
+# streamlit_app.py
+
+import streamlit as st
+from google.oauth2 import service_account
+from google.cloud import storage
+
+# Create API client.
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"]
+)
+client = storage.Client(credentials=credentials)
+
+# Retrieve file contents.
+# Uses st.cache_data to only rerun when the query changes or after 10 min.
+@st.cache_data(ttl=600)
+def read_file(bucket_name, file_path):
+    bucket = client.bucket(bucket_name)
+    content = bucket.blob(file_path).download_as_string().decode("utf-8")
+    return content
+
+bucket_name = "investolio_bucket"
+file_path = "Final_stock_csv"
+
+content = read_file(bucket_name, file_path)
+
 import pandas as pd
 import streamlit as st
 import sys
@@ -20,7 +45,7 @@ def get_df():
     Returns:
         div_df_final (DataFrame): It's the final cleaned DataFrame that will be used to make calculations and be filtered further.
     """
-    div_df_final = pd.read_csv("Final_stock_csv")
+    div_df_final = pd.read_csv(bucket_name)
     div_df_final.drop("Unnamed: 0", inplace=True, axis=1)
     div_yield = (div_df_final["Dividend Rate"] / div_df_final["Current Price"]).round(4)
     div_df_final["Dividend Yield"] = div_yield
